@@ -16,7 +16,7 @@ DATA_FOLDER=/orange/bianjiang/tienyu/coco2017/
 for IDX in $(seq 0 $((CHUNKS-1))); do
     CUDA_VISIBLE_DEVICES=${GPULIST[$IDX]} python -m llava.eval.eval_region_cls \
         --model-path $MODEL_PATH \
-        --annotation-file /orange/bianjiang/tienyu/coco/annotations/instances_val2017.json \
+        --annotation-file /orange/bianjiang/tienyu/coco2017/annotations/instances_val2017.json \
         --image-folder $DATA_FOLDER \
         --answers-file ./eval_output/$CKPT/regiongpt/coco/answers/${CHUNKS}_${IDX}.jsonl \
         --num-chunks $CHUNKS \

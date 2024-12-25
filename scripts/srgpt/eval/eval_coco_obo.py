@@ -4,7 +4,7 @@ import sys
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 
-coco = COCO("/PATH_TO_COCO_ANNOTATIONS/coco/annotations/instances_val2017.json")
+coco = COCO("/orange/bianjiang/tienyu/coco2017/annotations/instances_val2017.json")
 
 cid2name = {}
 for _, v in coco.cats.items():
