@@ -64,3 +64,33 @@ def register_datasets_mixtures():
         description="900K SFT data by SpatialRGPT (submission) w/ depth (template+LLaMa rephrased).",
     )
     add_dataset(spatialrgpt_ft)
+    '''Format:
+    [
+        {
+            "id": <question_id>,
+            'filename': <name without .jpg>,
+            "conversations": <conversation text>,
+            "rle" / "segmentation" / "bbox": <mask:[x1, y1, x2, y2]>,
+        }
+    ]
+    '''
+    #region ver.
+    ldct_vqa_f_reg = Dataset(
+        dataset_name='ldct_vqa_f_reg',
+        dataset_type='spatialrgpt',
+        data_path='/PATH/result_ldct_vqa_tr_f.json',
+        image_path='/orange/bianjiang/tienyu/IRB202400720_CT/',
+        depth_path='',
+        description='LDCT VQA Filtered Data (Region).'
+    )
+    add_dataset(ldct_vqa_f_reg)
+    
+    #non region ver.
+    ldct_vqa_f = Dataset(
+        dataset_name='ldct_vqa_f',
+        dataset_type='vflan',
+        data_path='/orange/bianjiang/tienyu/LC_CT/vqa2_f_data'
+    )
+    add_dataset(ldct_vqa_f)
+    
+    
