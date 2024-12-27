@@ -1576,6 +1576,10 @@ class LazyVFlanDataset(Dataset):
             if image_str.endswith(".jpg"):
                 decode_images.append(image_str)  # a path
             else:  # jpeg bytes
+                if len(image_str)%3==1:
+                    image_str+="=="
+                elif len(image_str)%3==2:
+                    image_str+="="
                 rawbytes = base64.b64decode(image_str)
                 decode_images.append(Image.open(io.BytesIO(rawbytes)).convert("RGB"))
 
