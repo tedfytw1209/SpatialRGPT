@@ -42,11 +42,14 @@ def get_bbox_list(bbox_data):
     #mask[y:y+rect_height,x:x+rect_width] = 255
     out_list = []
     for i,row in bbox_data.iterrows():
-        x = int(row['X'])
-        y = int(row['Y'])
-        rect_width = int(row['Width'])
-        rect_height = int(row['Height'])
-        out_list.append([x,y,x+rect_width,y+rect_height])
+        try:
+            x = int(row['X'])
+            y = int(row['Y'])
+            rect_width = int(row['Width'])
+            rect_height = int(row['Height'])
+            out_list.append([x,y,x+rect_width,y+rect_height])
+        except:
+            pass
     return out_list
 
 parser = argparse.ArgumentParser(description="Region Dataset Creation")
