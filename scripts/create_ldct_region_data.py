@@ -198,6 +198,6 @@ for _i in tqdm(range(num_cases)):
         }
         data_dict.append(_dict)
     
-out_path = os.path.join(output_dir,args.name+'.jsonl')
+out_path = os.path.join(output_dir,args.name+'.json')
 with open(out_path, 'w') as outfile:
     json.dump(data_dict, outfile)
