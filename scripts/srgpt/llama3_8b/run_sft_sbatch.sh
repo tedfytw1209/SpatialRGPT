@@ -30,4 +30,4 @@ date;hostname;pwd
 module load singularity
 
 # Run a tutorial python script within the container. Modify the path to your container and your script.
-singularity exec --nv scripts/srgpt/llama3_8b/3_sft_medical.sh $STAGE2_PATH $OUTPUT $DATA $EPOCH $OUTPUT_DIR $LR $bs
+singularity exec --nv /blue/bianjiang/tienyuchang/anaconda bash scripts/srgpt/llama3_8b/3_sft_medical.sh $STAGE2_PATH $OUTPUT $DATA $EPOCH $OUTPUT_DIR $LR $bs
