@@ -6,7 +6,6 @@ config.json
 eval_output/
 eval-result/
 hostfile
-core.*
 *.out
 captioner_bk/
 slurm-scripts/
