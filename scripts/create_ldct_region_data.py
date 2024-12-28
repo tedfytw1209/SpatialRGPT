@@ -170,7 +170,6 @@ for _i in tqdm(range(num_cases)):
     image_files = filepaths[_i][img_key]
     note_id = txt_results['NOTE_ID']
     bbox_data_e = bbox_data[bbox_data['Image']==image_files]
-    n_mask = len(bbox_data_e)
     #tmp fix, transport to list
     if image_files.endswith('.jpg'):
         img_list = image_files.replace('.jpg','')
@@ -183,6 +182,7 @@ for _i in tqdm(range(num_cases)):
     qs_id = txt_results[id_key]
     #bounding box
     bbox_list = get_bbox_list(bbox_data_e)
+    n_mask = len(bbox_list)
     #qs_txt to conversation
     question = txt_results.get(qs_key,default_qs)
     question = question.replace("<image>\n", "").replace("\n<image>", "").replace("<image>", "")
