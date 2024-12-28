@@ -76,9 +76,13 @@ def get_chunk(lst, n, k):
     return chunks[k]
 
 
-def generate_data_list(annotations,image_folder,image_processor,mask_processer
-                       ,model_config,tokenizer):
+def generate_data_list(annotations,image_folder,image_processor,model_config,tokenizer):
 
+    mask_processer = copy.deepcopy(image_processor)
+    mask_processer.do_normalize = False
+    mask_processer.do_convert_rgb = False
+    mask_processer.rescale_factor = 1.0
+    
     data_list = []
     for line in annotations:
         img_file = line["filename"]
@@ -130,7 +134,7 @@ def eval_model(args):
 
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, model_name, args.model_base)
 
-    data_list = generate_data_list(args.annotation_file)
+    data_list = generate_data_list(args.annotation_file,args.image_folder,image_processor,model.config,tokenizer)
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
 
