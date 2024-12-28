@@ -50,6 +50,9 @@ def get_bbox_list(bbox_data):
             out_list.append([x,y,x+rect_width,y+rect_height])
         except:
             pass
+    #error handling
+    if len(out_list)==0:
+        out_list = [[0,0,512,512]]
     return out_list
 
 parser = argparse.ArgumentParser(description="Region Dataset Creation")
