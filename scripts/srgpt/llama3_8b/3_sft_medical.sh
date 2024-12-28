@@ -31,7 +31,7 @@ echo "per device batch size:" $bs
 echo "node rank:" $SLURM_PROCID
 
 source activate base
-conda activate vila
+conda activate srgpt
 
 torchrun --nnodes=$n_node --nproc_per_node=4 --master_port=25001 \
     --master_addr $MASTER_ADDR --node_rank=$CURRENT_RANK \
