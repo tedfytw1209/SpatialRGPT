@@ -20,6 +20,6 @@ python -m llava.eval.eval_region_vqa \
     --model-path $MODEL_PATH \
     --annotation-file $QUESTION_FILE \
     --image-folder $IMAGE_DIR \
-    --answers-file ./eval_output/$DATASET_NAME/answers_$CKPT.json \
+    --answers-file ./eval_output/$DATASET_NAME/answers_$CKPT.jsonl \
     --temperature 0.2 \
     --conv-mode $CONV_MODE
