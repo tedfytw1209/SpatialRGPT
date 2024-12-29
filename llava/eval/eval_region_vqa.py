@@ -9,8 +9,6 @@ import cv2
 import numpy as np
 import torch
 from PIL import Image
-from pycocotools import mask as cocomask
-from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 from llava.constants import DEFAULT_IM_END_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IMAGE_TOKEN, IMAGE_TOKEN_INDEX
@@ -208,8 +206,7 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
-    parser.add_argument("--dataset", type=str, default="lvis")
-    parser.add_argument("--prompt_type", type=str, default="seg")
+    parser.add_argument("--prompt_type", type=str, default="bbox")
     parser.add_argument("--erosion", type=bool, default=False)
     parser.add_argument("--dilation", type=bool, default=False)
     parser.add_argument("--kernel", type=int, default=3)
