@@ -131,8 +131,8 @@ def eval_model(args):
     model_name = get_model_name_from_path(model_path)
 
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, model_name, args.model_base)
-
-    data_list = generate_data_list(args.annotation_file,args.image_folder,image_processor,model.config,tokenizer)
+    annotation_data = json.load(open(args.annotation_file))
+    data_list = generate_data_list(annotation_data,args.image_folder,image_processor,model.config,tokenizer)
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
 
