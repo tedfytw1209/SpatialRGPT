@@ -88,7 +88,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         conv = line["conversations"]
         #input_ids
         prompt = conv[0]["value"]
-        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
+        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt").squeeze(0)
         # Load image
         #crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
         image = Image.open(os.path.join(image_folder, img_file+'.jpg')).convert("RGB")
