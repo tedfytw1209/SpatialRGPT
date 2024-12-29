@@ -90,10 +90,10 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         prompt = conv[0]["value"]
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
         # Load image
-        crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
+        #crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
         image = Image.open(os.path.join(image_folder, img_file+'.jpg')).convert("RGB")
         image_info = {"height": image.height, "width": image.width}
-        image = image.crop(tuple(crop_bbox))
+        #image = image.crop(tuple(crop_bbox))
         images_tensor = process_images([image], image_processor, model_config)
         # make masks
         masks = []
@@ -102,7 +102,8 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
             x1, y1, x2, y2 = map(int, bbox)
             zero_mask[y1:y2, x1:x2] = 1
             image_aspect_ratio = getattr(model_config, "image_aspect_ratio", None)
-            zero_mask = zero_mask[crop_bbox[1] : crop_bbox[3], crop_bbox[0] : crop_bbox[2]]
+            #what is this for?
+            #zero_mask = zero_mask[crop_bbox[1] : crop_bbox[3], crop_bbox[0] : crop_bbox[2]]
             if image_aspect_ratio == "pad":
                 zero_mask = pad_to_square(zero_mask)
             masks.append(zero_mask)
