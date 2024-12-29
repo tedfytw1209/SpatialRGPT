@@ -145,7 +145,9 @@ def eval_model(args):
         image_tensor = line["image_tensor"]
         masks = line["masks"]
         input_ids = line["input_ids"]
-
+        print('input_ids: ',input_ids)
+        print('image_tensor: ',image_tensor)
+        print('masks: ',masks)
         stop_str = (
             conv_templates[args.conv_mode].sep
             if conv_templates[args.conv_mode].sep_style != SeparatorStyle.TWO
