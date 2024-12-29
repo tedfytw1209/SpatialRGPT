@@ -241,12 +241,18 @@ class CustomDataset(Dataset):
         prompt = conv.get_prompt()
 
         image = Image.open(os.path.join(self.image_folder, image_file)).convert("RGB")
+        print('origin image.size:',image.size)
         image = image.crop(tuple(crop_bbox))
 
         images_tensor = process_images([image], self.image_processor, self.model_config)
 
         input_ids = tokenizer_image_token(prompt, self.tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
-
+        #shapes
+        print('input_ids.shape: ',input_ids.shape)
+        print('images_tensor.shape: ',images_tensor.shape)
+        print('masks.shape: ',masks.shape)
+        print(bboxes)
+        print('crop_bbox:',crop_bbox)
         return input_ids, images_tensor, masks, str(bboxes)
 
     def __len__(self):
