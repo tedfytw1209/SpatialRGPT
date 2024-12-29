@@ -95,7 +95,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         print('origin image.size:',image.size)
         image_info = {"height": image.height, "width": image.width}
         #image = image.crop(tuple(crop_bbox))
-        images_tensor = process_images([image], image_processor, model_config)
+        images_tensor = process_images([image], image_processor, model_config).unsqueeze(0)
         # make masks
         masks = []
         for bbox in bboxs:
