@@ -92,6 +92,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         # Load image
         #crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
         image = Image.open(os.path.join(image_folder, img_file+'.jpg')).convert("RGB")
+        print('origin image.size:',image.size)
         image_info = {"height": image.height, "width": image.width}
         #image = image.crop(tuple(crop_bbox))
         images_tensor = process_images([image], image_processor, model_config)
@@ -112,6 +113,10 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
             m = mask_processer.preprocess(m[None, ...], return_tensors="pt")["pixel_values"][0]
             masks_pt.append(m)
         masks = torch.vstack(masks_pt).float().unsqueeze(0)  # (n, h, w) -> (1, n, h, w)
+        print('input_ids: ',input_ids.shape)
+        print('image_tensor: ',images_tensor.shape)
+        print('masks: ',masks.shape)
+        print(bboxs)
         data_list.append(
             {
                 "id": line["id"],
@@ -145,9 +150,7 @@ def eval_model(args):
         image_tensor = line["image_tensor"]
         masks = line["masks"]
         input_ids = line["input_ids"]
-        print('input_ids: ',input_ids.shape,input_ids)
-        print('image_tensor: ',image_tensor.shape,image_tensor)
-        print('masks: ',masks.shape,masks)
+        
         stop_str = (
             conv_templates[args.conv_mode].sep
             if conv_templates[args.conv_mode].sep_style != SeparatorStyle.TWO
