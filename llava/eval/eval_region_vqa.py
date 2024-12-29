@@ -113,6 +113,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         masks = torch.vstack(masks_pt).float()  # (n, h, w)
         data_list.append(
             {
+                "id": line["id"],
                 "input_ids": input_ids,
                 "filename": img_file,
                 "conversations": conv,
@@ -138,7 +139,7 @@ def eval_model(args):
 
     ans_file = open(answers_file, "w")
 
-    for line in tqdm(zip(data_list), total=len(data_list)):
+    for line in tqdm(data_list, total=len(data_list)):
         idx = line["id"]
         image_tensor = line["image_tensor"]
         masks = line["masks"]
