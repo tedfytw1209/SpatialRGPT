@@ -91,7 +91,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt")
         # Load image
         crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
-        image = Image.open(os.path.join(image_folder, img_file)).convert("RGB")
+        image = Image.open(os.path.join(image_folder, img_file+'.jpg')).convert("RGB")
         image_info = {"height": image.height, "width": image.width}
         image = image.crop(tuple(crop_bbox))
         images_tensor = process_images([image], image_processor, model_config)
