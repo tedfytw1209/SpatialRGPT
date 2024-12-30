@@ -58,7 +58,7 @@ def register_datasets_mixtures():
     spatialrgpt_ft = Dataset(
         dataset_name="spatialrgpt_ft",
         dataset_type="spatialrgpt",
-        data_path="/PATH/result_10_depth_convs.json",
+        data_path="/orange/bianjiang/tienyu/OpenSpatialDataset/result_10_depth_convs.json",
         image_path="/PATH/Openimages/train",
         depth_path="/PATH/relative_depth/raw",
         description="900K SFT data by SpatialRGPT (submission) w/ depth (template+LLaMa rephrased).",

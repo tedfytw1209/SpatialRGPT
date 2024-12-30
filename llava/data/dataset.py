@@ -1792,7 +1792,16 @@ class LazySupervisedSpatialDataset(Dataset):
         data_dict["masks"] = masks
         if self.enable_depth:
             data_dict["depth"] = depth.unsqueeze(0)
-
+        #debug
+        print("Data Dict Keys:")
+        print(sorted(data_dict.keys()))
+        for k in data_dict.keys():
+            print(k, end=" ")
+            try:
+                print(data_dict[k].shape)
+            except:
+                print(data_dict[k])
+        
         return data_dict
 
 
