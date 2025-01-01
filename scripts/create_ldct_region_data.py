@@ -168,7 +168,7 @@ for _i in tqdm(range(num_cases)):
     txt_results = filepaths[_i]
     ans_results = ans_jsons[_i]
     image_files = filepaths[_i][img_key]
-    note_id = txt_results['NOTE_ID']
+    #note_id = txt_results['NOTE_ID']
     bbox_data_e = bbox_data[bbox_data['Image']==image_files]
     #tmp fix, transport to list
     if image_files.endswith('.jpg'):
