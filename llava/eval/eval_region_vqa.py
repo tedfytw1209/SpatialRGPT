@@ -113,10 +113,6 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
             m = mask_processer.preprocess(m[None, ...], return_tensors="pt")["pixel_values"][0]
             masks_pt.append(m)
         masks = torch.vstack(masks_pt).float().unsqueeze(0)  # (n, h, w) -> (1, n, h, w)
-        print('input_ids: ',input_ids.shape)
-        print('image_tensor: ',images_tensor.shape)
-        print('masks: ',masks.shape)
-        print(bboxs)
         data_list.append(
             {
                 "id": line["id"],

@@ -310,10 +310,6 @@ def eval_model(args):
             else conv_templates[args.conv_mode].sep2
         )
         input_ids = input_ids.to(device="cuda", non_blocking=True)
-        print('input_ids.shape: ',input_ids.shape)
-        print('images_tensor.shape: ',image_tensor.shape)
-        print('masks.shape: ',masks.shape)
-        print(bboxes)
 
         with torch.inference_mode():
             output_ids = model.generate(
