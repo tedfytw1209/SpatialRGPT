@@ -87,7 +87,7 @@ def register_datasets_mixtures():
     lcct_vqa_f_reg = Dataset(
         dataset_name='lcct_vqa_f_reg',
         dataset_type='spatialrgpt',
-        data_path='/orange/bianjiang/tienyu/SpatialRGPT/data/LungCancer_CT/lcctf_region.json',
+        data_path='/orange/bianjiang/tienyu/SpatialRGPT/data/LungCancer_CT/lcctf_region_train.json',
         image_path='/orange/bianjiang/tienyu/IRB202201140_Lung_CT2/',
         depth_path='',
         description='LCCT VQA Filtered Data (Region).'
