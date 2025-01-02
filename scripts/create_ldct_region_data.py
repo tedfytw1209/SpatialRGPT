@@ -180,13 +180,14 @@ for _i in tqdm(range(num_cases)):
         print('No ground truth answer, skip')
         exit()
     qs_id = txt_results[id_key]
+    qs_type = txt_results['question_type']
     #bounding box
     bbox_list = get_bbox_list(bbox_data_e)
     n_mask = len(bbox_list)
     #qs_txt to conversation
     question = txt_results.get(qs_key,default_qs)
     question = question.replace("<image>\n", "").replace("\n<image>", "").replace("<image>", "")
-    question = "<image>\n" + question + 'in' + '<mask>'*n_mask
+    question = "<image>\n" + question + ' in' + ' <mask>'*n_mask
     conversation = [
                 {"from": "human", "value": question},
                 {"from": "gpt", "value": reference_report},
@@ -198,6 +199,7 @@ for _i in tqdm(range(num_cases)):
         "conversations": conversation,
         "filename": img_list,
         "bbox": bbox_list,
+        "question_type": qs_type,
         }
         data_dict.append(_dict)
     

@@ -86,6 +86,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         img_file = line["filename"]
         bboxs = line["bbox"]
         conv = line["conversations"]
+        qs_type = line['question_type']
         #input_ids
         prompt = conv[0]["value"]
         input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt").unsqueeze(0)
@@ -122,6 +123,7 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
                 "image_tensor": images_tensor,
                 "masks": masks,
                 "bbox": str(bboxs),
+                "question_type": qs_type,
             }
         )
 
@@ -146,6 +148,7 @@ def eval_model(args):
         image_tensor = line["image_tensor"]
         masks = line["masks"]
         input_ids = line["input_ids"]
+        qs_type = line['question_type']
         
         stop_str = (
             conv_templates[args.conv_mode].sep
@@ -163,7 +166,7 @@ def eval_model(args):
                 temperature=args.temperature,
                 top_p=args.top_p,
                 num_beams=args.num_beams,
-                max_new_tokens=64,
+                max_new_tokens=128,
                 use_cache=True,
                 pad_token_id=tokenizer.pad_token_id,
             )
@@ -179,12 +182,14 @@ def eval_model(args):
             json.dumps(
                 {
                     "question_id": idx,
+                    "question": line["conversations"][0]["value"],
                     "text": outputs,
                     "gt_name": line["conversations"][1]["value"],
                     "bbox": line["bbox"],
                     "image_id": image_id,
                     "model_id": model_name,
                     "metadata": {},
+                    "question_type": qs_type,
                 }
             )
             + "\n"
