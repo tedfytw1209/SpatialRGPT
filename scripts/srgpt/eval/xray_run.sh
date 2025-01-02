@@ -34,7 +34,7 @@ python -m llava.eval.model_vqa_batch \
     --meta-path $METADATA \
     --replace-q \
     --image-folder $IMAGE_DIR \
-    --answers-file ./eval_output/finetune/$DATASET_NAME/answers_$CKPT.jsonl \
+    --answers-file ./eval_output/$DATASET_NAME/answers_$CKPT.jsonl \
     --batch-size $BS \
     --temperature 0.2 \
     --conv-mode $CONV_MODE
