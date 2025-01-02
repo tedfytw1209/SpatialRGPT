@@ -170,9 +170,13 @@ def eval_model(args):
                 use_cache=True,
                 pad_token_id=tokenizer.pad_token_id,
             )
-
         outputs = outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0]
         outputs = outputs.strip()
+        #debug
+        print('question:',line["conversations"][0]["value"])
+        print('outputs:',outputs)
+        print('gt_output:',line["conversations"][1]["value"])
+        
         if outputs.endswith(stop_str):
             outputs = outputs[: -len(stop_str)]
         outputs = outputs.strip()
