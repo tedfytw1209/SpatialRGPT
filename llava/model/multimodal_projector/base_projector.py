@@ -46,7 +46,7 @@ class DownSampleBlock(nn.Module):
         if h % 2 == 1:
             x = torch.concat([x, torch.zeros((n, w, 1, c), dtype=x.dtype).to(x.device)], dim=2).contiguous()
             n, w, h, c = x.size()
-        x = x.view(n, w, int(h / 2), int(c * 2))
+        x = x.contiguous().view(n, w, int(h / 2), int(c * 2))
         x = x.permute(0, 2, 1, 3).contiguous()
         x = x.view(n, int(h / 2), int(w / 2), int(c * 4))
         return x
