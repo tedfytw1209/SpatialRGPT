@@ -54,6 +54,7 @@ torchrun --nnodes=$n_node --nproc_per_node=4 --master_port=25001 \
     --mm_use_im_start_end False \
     --mm_use_im_patch_token False \
     --image_aspect_ratio resize \
+    --vision_resolution 512 \
     --bf16 True \
     --output_dir $OUTPUT_DIR/$OUTPUT \
     --num_train_epochs $EPOCH \
