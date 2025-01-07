@@ -13,7 +13,7 @@ from tqdm import tqdm
 
 from llava.constants import DEFAULT_IM_END_TOKEN, DEFAULT_IM_START_TOKEN, DEFAULT_IMAGE_TOKEN, IMAGE_TOKEN_INDEX
 from llava.conversation import SeparatorStyle, conv_templates
-from llava.mm_utils import get_model_name_from_path, process_images, tokenizer_image_token
+from llava.mm_utils import get_model_name_from_path, process_images, tokenizer_image_token, KeywordsStoppingCriteria
 from llava.model.builder import load_pretrained_model
 from llava.utils import disable_torch_init
 
@@ -74,7 +74,7 @@ def get_chunk(lst, n, k):
     return chunks[k]
 
 
-def generate_data_list(annotations,image_folder,image_processor,model_config,tokenizer):
+def generate_data_list(annotations,image_folder,image_processor,model,tokenizer,conv_mode):
 
     mask_processer = copy.deepcopy(image_processor)
     mask_processer.do_normalize = False
@@ -88,21 +88,25 @@ def generate_data_list(annotations,image_folder,image_processor,model_config,tok
         conv = line["conversations"]
         qs_type = line['question_type']
         #input_ids
-        prompt = conv[0]["value"]
-        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt").unsqueeze(0)
+        qs = conv[0]["value"]
+        conv = conv_templates[conv_mode].copy()
+        conv.append_message(conv.roles[0], qs)
+        conv.append_message(conv.roles[1], None)
+        prompt = conv.get_prompt()
+        input_ids = tokenizer_image_token(prompt, tokenizer, IMAGE_TOKEN_INDEX, return_tensors="pt").unsqueeze(0).cuda()
         # Load image
         #crop_bbox = bboxs[0] #[x_left, y_top, x_right, y_bottom]
         image = Image.open(os.path.join(image_folder, img_file+'.jpg')).convert("RGB")
         image_info = {"height": image.height, "width": image.width}
         #image = image.crop(tuple(crop_bbox))
-        images_tensor = process_images([image], image_processor, model_config).unsqueeze(0)
+        images_tensor = process_images([image], image_processor, model.config).unsqueeze(0).to(model.device, dtype=torch.float16)
         # make masks
         masks = []
         for bbox in bboxs:
             zero_mask = np.zeros((image_info["height"], image_info["width"]), dtype=np.uint8)
             x1, y1, x2, y2 = map(int, bbox)
             zero_mask[y1:y2, x1:x2] = 1
-            image_aspect_ratio = getattr(model_config, "image_aspect_ratio", None)
+            image_aspect_ratio = getattr(model.config, "image_aspect_ratio", None)
             #what is this for?
             #zero_mask = zero_mask[crop_bbox[1] : crop_bbox[3], crop_bbox[0] : crop_bbox[2]]
             if image_aspect_ratio == "pad":
@@ -136,7 +140,7 @@ def eval_model(args):
 
     tokenizer, model, image_processor, context_len = load_pretrained_model(model_path, model_name, args.model_base)
     annotation_data = json.load(open(args.annotation_file))
-    data_list = generate_data_list(annotation_data,args.image_folder,image_processor,model.config,tokenizer)
+    data_list = generate_data_list(annotation_data,args.image_folder,image_processor,model,tokenizer,args.conv_mode)
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
 
@@ -155,7 +159,8 @@ def eval_model(args):
             else conv_templates[args.conv_mode].sep2
         )
         input_ids = input_ids.to(device="cuda", non_blocking=True)
-
+        keywords = [stop_str]
+        stopping_criteria = KeywordsStoppingCriteria(keywords, tokenizer, input_ids)
         with torch.inference_mode():
             output_ids = model.generate(
                 input_ids,
@@ -167,7 +172,9 @@ def eval_model(args):
                 num_beams=args.num_beams,
                 max_new_tokens=128,
                 use_cache=True,
-                pad_token_id=tokenizer.pad_token_id,
+                #pad_token_id=tokenizer.pad_token_id,
+                pad_token_id=tokenizer.eos_token_id,
+                stopping_criteria=[stopping_criteria],
             )
         outputs = outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0]
         outputs = outputs.strip()
@@ -177,10 +184,11 @@ def eval_model(args):
         print('output_ids shape:',output_ids.shape)
         print('outputs:',outputs)
         print('gt_output:',line["conversations"][1]["value"])
-        
+        '''
         if outputs.endswith(stop_str):
             outputs = outputs[: -len(stop_str)]
-        outputs = outputs.strip()
+        '''
+        #outputs = outputs.strip()
 
         image_id = line["filename"]
         ans_file.write(
