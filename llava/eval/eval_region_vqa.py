@@ -89,6 +89,7 @@ def generate_data_list(annotations,image_folder,image_processor,model,tokenizer,
         qs_type = line['question_type']
         #input_ids
         qs = conv[0]["value"]
+        gt = conv[1]["value"]
         conv = conv_templates[conv_mode].copy()
         conv.append_message(conv.roles[0], qs)
         conv.append_message(conv.roles[1], None)
@@ -123,6 +124,7 @@ def generate_data_list(annotations,image_folder,image_processor,model,tokenizer,
                 "input_ids": input_ids,
                 "filename": img_file,
                 "conversations": conv,
+                "ground_truth": gt,
                 "image_tensor": images_tensor,
                 "masks": masks,
                 "bbox": str(bboxs),
@@ -195,9 +197,9 @@ def eval_model(args):
             json.dumps(
                 {
                     "question_id": idx,
-                    "question": line["conversations"][0]["value"],
+                    "question": line["conversations"].get_prompt(),
                     "text": outputs,
-                    "gt_name": line["conversations"][1]["value"],
+                    "gt_name": line["ground_truth"],
                     "bbox": line["bbox"],
                     "image_id": image_id,
                     "model_id": model_name,
