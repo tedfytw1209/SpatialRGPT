@@ -182,10 +182,10 @@ def eval_model(args):
         outputs = outputs.strip()
         #debug
         print('-'*10)
-        print('question:',line["conversations"][0]["value"])
+        print('question:',line["conversations"].get_prompt())
         print('output_ids shape:',output_ids.shape)
         print('outputs:',outputs)
-        print('gt_output:',line["conversations"][1]["value"])
+        print('gt_output:',line["ground_truth"])
         '''
         if outputs.endswith(stop_str):
             outputs = outputs[: -len(stop_str)]
