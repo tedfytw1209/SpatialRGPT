@@ -11,26 +11,6 @@ from PIL import Image
 from io import BytesIO
 import pandas as pd
 
-def encode_image_to_base64(image_path,resize=-1,img_format='PNG'):
-    if resize>0:
-        im = Image.open(image_path)
-        if resize > 1:
-            width, height = im.size
-            min_edge = min(width,height)
-            resize = min_edge / resize
-            new_size = (int(width/resize), int(height/resize))
-            #new_size = (int(resize), int(resize))
-        else:
-            width, height = im.size
-            new_size = (int(width*resize), int(height*resize))
-        im = im.resize(new_size)
-        buffered = BytesIO()
-        im.save(buffered, format=img_format)
-        base64_string = base64.b64encode(buffered.getvalue()).decode('utf-8')
-    else:
-        with open(image_path, "rb") as img_file:
-            base64_string = base64.b64encode(img_file.read()).decode('utf-8')
-    return base64_string
 
 def save_dataset(dataset_type, dataset_name, save_path, data):
     save_filename = f"{dataset_type}_{dataset_name}.pkl"
@@ -56,12 +36,7 @@ def get_bbox_list(bbox_data):
     return out_list
 
 parser = argparse.ArgumentParser(description="Region Dataset Creation")
-parser.add_argument(
-    "-i",
-    "--image-path",
-    default="",
-    help="dir for input image",
-)
+
 parser.add_argument(
     "-t",
     "--txt-path",
@@ -95,7 +70,6 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-image_dir = args.image_path
 output_dir = args.output_dir
 ans_path = args.answer_path
 txt_path = args.txt_path
