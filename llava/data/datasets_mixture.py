@@ -84,6 +84,16 @@ def register_datasets_mixtures():
         description='LDCT VQA Filtered Data (Region).'
     )
     add_dataset(ldct_vqa_f_reg)
+    ldct2_vqa_f_reg = Dataset(
+        dataset_name='ldct2_vqa_f_reg',
+        dataset_type='spatialrgpt',
+        data_path='/orange/bianjiang/tienyu/SpatialRGPT/data/LungCancer_CTv2/ldct2f_norm_region.json',
+        image_path='/orange/bianjiang/tienyu/IRB202400720_LDCT2/',
+        depth_path='',
+        description='LDCT2 VQA Filtered Data (Region) with normalizations.'
+    )
+    add_dataset(ldct2_vqa_f_reg)
+    
     lcct_vqa_f_reg = Dataset(
         dataset_name='lcct_vqa_f_reg',
         dataset_type='spatialrgpt',
@@ -93,6 +103,15 @@ def register_datasets_mixtures():
         description='LCCT VQA Filtered Data (Region).'
     )
     add_dataset(lcct_vqa_f_reg)
+    lcct2_vqa_f_reg = Dataset(
+        dataset_name='lcct2_vqa_f_reg',
+        dataset_type='spatialrgpt',
+        data_path='/orange/bianjiang/tienyu/SpatialRGPT/data/LungCancer_CTv2/lcct2f_norm_region.json',
+        image_path='/orange/bianjiang/tienyu/IRB202201140_Lung_CT2_norm/',
+        depth_path='',
+        description='LCCT VQA Filtered Data (Region).'
+    )
+    add_dataset(lcct2_vqa_f_reg)
     
     #non region ver.
     ldct_vqa_f = Dataset(
