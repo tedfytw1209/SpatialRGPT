@@ -4,7 +4,7 @@
 #SBATCH --cpus-per-task=16
 #SBATCH --mem-per-cpu=64gb
 #SBATCH --partition=gpu
-#SBATCH --gpus=a100:4
+#SBATCH --gpus=a100:8
 #SBATCH --time=72:00:00
 #SBATCH --output=%x.%j.out
 #SBATCH --account=bianjiang
