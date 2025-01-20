@@ -93,6 +93,15 @@ def register_datasets_mixtures():
         description='LDCT2 VQA Filtered Data (Region) with normalizations.'
     )
     add_dataset(ldct2_vqa_f_reg)
+    ldct2_vqa_wunk_reg = Dataset(
+        dataset_name='ldct2_vqa_wunk_reg',
+        dataset_type='spatialrgpt',
+        data_path='/orange/bianjiang/tienyu/SpatialRGPT/data/LungCancer_CTv2/ldct2f_norm_region.json',
+        image_path='/orange/bianjiang/tienyu/IRB202400720_LDCT2_norm/',
+        depth_path='',
+        description='LDCT2 VQA Filtered Data (Region) with normalizations.'
+    )
+    add_dataset(ldct2_vqa_wunk_reg)
     
     #region ver. LCCT
     lcct_vqa_f_reg = Dataset(
